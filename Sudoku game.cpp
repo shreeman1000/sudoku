@@ -324,7 +324,7 @@ void Sudoku :: generate_puzzle()
 		{
 			if(this->grid[i][j] != 0)
 			{
-				vector<int> pair = {i,j};
+				vector<int> pair {i,j};
 				this->pos.push_back(pair);
 			}
 		}
