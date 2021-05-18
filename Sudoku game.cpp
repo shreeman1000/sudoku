@@ -146,7 +146,7 @@ bool Sudoku :: fill(int a[9][9],bool disp)
 					{
 						a[i][j]=k;
 						if(disp)
-						display(a);
+							display(a);
 						if(fill(a,disp))
 							return true;
 						a[i][j]=0;
@@ -263,6 +263,7 @@ void Sudoku :: generate_solution()
 // this generates a puzzle from random solution formed by generate_solution
 void Sudoku :: generate_puzzle()
 {
+	this->pos.clear();
 	system("cls");
 	srand(time(0));
 	// b and c are copies of grid
@@ -324,11 +325,20 @@ void Sudoku :: generate_puzzle()
 		{
 			if(this->grid[i][j] != 0)
 			{
-				vector<int> pair {i,j};
+				vector<int> pair;
+				pair.push_back(i);
+				pair.push_back(j);
 				this->pos.push_back(pair);
 			}
 		}
 	}
+//	for(auto q : pos){
+//		for(auto e : q){
+//			cout<<e<<" ";
+//		}
+//		cout<<endl;
+//	}
+//	getline(cin,ri);
 	system("cls");
 }
 // calculates branch difficult score by finding cell with least number of vlaues to be filled
@@ -472,6 +482,23 @@ int Sudoku :: user(){
 // main menu returns the number of digits the question will have and the choice made
 void main_menu(int result[2])
 {
+//	easy = 33-42 ;; mod10
+//	medium = 27 - 32 ;; mod9
+//	hard = 23 - 26 ;; mod4
+// 	avg scores of puzzle with x digits over 20 iterations
+//	35 digits score = 76
+//	34 digits score = 122
+//	33 digits score = 88
+//	32 digits score = 159
+//	31 digits score = 290
+//	30 digits score = 221
+//	29 digits score = 267
+//	28 digits score = 338
+//	27 digits score = 454
+//	26 digits score = 560
+//	24 digits score = 787
+//	23 digits score = 793
+//	22 digits score = 749
 	srand(time(0));
 	int mod,digit,choice;
 	system("cls");
@@ -537,15 +564,15 @@ int main()
 		main_menu(n);
 		Sudoku ques(n[0]);
 		
+		int min_score = 0;
+		if(n[1]==1 || n[1]==4)
+			min_score = 0;
+		else if(n[1]==2)
+			min_score = 180;
+		else
+			min_score = 500;
 		while(true){
 			ques.generate_puzzle();
-			int min_score = 0;
-			if(n[1]==1 || n[1]==4)
-				min_score = 0;
-			else if(n[1]==2)
-				min_score = 180;
-			else
-				min_score = 500;
 			difficulty = ques.calculateDifficulty();
 			if(difficulty >= min_score)
 				break;
